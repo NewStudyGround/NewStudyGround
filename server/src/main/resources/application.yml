@@ -1,22 +1,42 @@
 spring:
   datasource:
-    url: jdbc:mysql://studyground.cm5pos6iryz8.ap-northeast-2.rds.amazonaws.com:3306/StudyGround_db
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: student
-    password: ${MYSQL_PASSWORD}
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test
+    username: h2
+    password:
 
-  batch:
-    jdbc:
-      initialize-schema: never
+  h2:
+    console:
+      enabled: true
+      path: /h2
 
   jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      naming:
-        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      ddl-auto: none #서버환경에서는 none 으로 고정
+      ddl-auto: create        # DB 초기화 전략 (none, create, create-drop, update, validate)
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true      # 쿼리 로그 포맷 (정렬)
+        show_sql: true        # 쿼리 로그 출력
 
-    show-sql: true
+  #    url: jdbc:mysql://studyground.cm5pos6iryz8.ap-northeast-2.rds.amazonaws.com:3306/StudyGround_db
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    username: student
+#    password: ${MYSQL_PASSWORD}
+
+
+#  batch:
+#    jdbc:
+#      initialize-schema: never
+
+#  jpa:
+#    hibernate:
+#      naming:
+#        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
+#        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#      ddl-auto: create #서버환경에서는 none 으로 고정
+#    show-sql: true
   security:
     oauth2:
       client:
