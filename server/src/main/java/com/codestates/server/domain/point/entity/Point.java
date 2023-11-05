@@ -13,4 +13,7 @@ public class Point {
 
     @ManyToOne
     private Member member;
+
+    @Column
+    private PointType pointType;
 }
