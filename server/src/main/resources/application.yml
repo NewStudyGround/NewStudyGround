@@ -1,24 +1,12 @@
+
+#######################################################################
+#DB 세팅 부분
 spring:
-  datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:test
-    username: h2
-    password:
+  profiles:
+    default: dev # 로컬 개발환경 dev / 배포시 prod
+#######################################################################
 
-  h2:
-    console:
-      enabled: true
-      path: /h2
 
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: create        # DB 초기화 전략 (none, create, create-drop, update, validate)
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-        format_sql: true      # 쿼리 로그 포맷 (정렬)
-        show_sql: true        # 쿼리 로그 출력
 
   #    url: jdbc:mysql://studyground.cm5pos6iryz8.ap-northeast-2.rds.amazonaws.com:3306/StudyGround_db
 #    driver-class-name: com.mysql.cj.jdbc.Driver
