@@ -36,11 +36,11 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-      - name: Build and push register app
-        run: |
-          docker build -t newStudyGround -f ./server/Dockerfile .
-          docker tag newStudyGround ${{ secrets.DOCKER_HUB_USERNAME }}/newStudyGround:${GITHUB_SHA::7}
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/newStudyGround:${GITHUB_SHA::7}
+      # - name: Build and push register app
+        # run: |
+          # docker build -t newstudyground -f ./server/Dockerfile . #LowerCase 작성
+          # docker tag newstudyground ${{ secrets.DOCKER_HUB_USERNAME }}/newstudyground:${GITHUB_SHA::7}
+          # docker push ${{ secrets.DOCKER_HUB_USERNAME }}/newstudyground:${GITHUB_SHA::7}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -66,8 +66,8 @@ jobs:
              '  sudo docker stop server',
              '  sudo docker rm server',
              'fi',
-             'sudo docker pull leesaewoo/newStudyGround:${GITHUB_SHA::7}',
-             'sudo docker tag leesaewoo/newStudyGround:${GITHUB_SHA::7} newStudyGround',
+             'sudo docker pull leesaewoo/newstudyground:${GITHUB_SHA::7}',
+             'sudo docker tag leesaewoo/newstudyground:${GITHUB_SHA::7} newStudyGround',
              'sudo docker run -e TZ=Asia/Seoul -d --name server -p 8080:8080 newStudyGround'
            ]" \
            --output text
