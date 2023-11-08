@@ -1,3 +1,4 @@
+#CICD
 name: Java CI with Gradle
 
 on:
