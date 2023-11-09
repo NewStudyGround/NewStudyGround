@@ -93,7 +93,7 @@ cloud:
       access-key: ${AWS_ACCESS_KEY}
       secret-key: ${AWS_SECRET_KEY}
     s3:
-      bucket: newstudyground
+      bucket: studyground-bucket
     region:
       static: ap-northeast-2
     stack:
