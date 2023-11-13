@@ -43,6 +43,7 @@ jobs:
         run: |
           docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/studyground:${GITHUB_SHA::7} -f ./server/Dockerfile .
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/studyground:${GITHUB_SHA::7}
+        working-directory: ${{ env.working-directory }}
 
       # 서버에 배포할 때 필요한 환경변수 파일 복사해서 넣어주기
       # 명령어에 직접 민감한 정보 넣을 수 없음
