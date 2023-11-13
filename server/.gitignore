@@ -36,3 +36,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### docker 실행위한 환경변수파일 ###
+.env
