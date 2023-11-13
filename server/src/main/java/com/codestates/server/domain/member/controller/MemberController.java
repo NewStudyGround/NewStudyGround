@@ -5,6 +5,7 @@ import com.codestates.server.domain.member.dto.MemberPostDto;
 import com.codestates.server.domain.member.dto.MemberResponseDto;
 import com.codestates.server.domain.member.entity.Member;
 import com.codestates.server.domain.member.mapper.MemberMapper;
+import com.codestates.server.domain.pointhistory.service.PointHistoryService;
 import com.codestates.server.global.dto.MultiResponseDto;
 import com.codestates.server.domain.member.service.MemberService;
 import com.codestates.server.global.uri.UriCreator;
@@ -31,6 +32,7 @@ public class MemberController {
 
     private final MemberMapper mapper;
     private final MemberService memberService;
+    private final PointHistoryService pointHistoryService;
 
 
     @PostMapping("/signup")
@@ -122,5 +124,14 @@ public class MemberController {
         memberService.deleteMember(memberId);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+
+    //작성중
+    @GetMapping("/{member-id}/point")
+    public String getPoint(@PathVariable("member-id") Long memberId){
+
+
+        return "hi";
     }
 }

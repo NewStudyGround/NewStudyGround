@@ -32,6 +32,8 @@ public class Member {
 
     private String profileImage;
 
+    private Long point; //계산된 포인트값
+
     // 멤버 당 하나의 권한을 가지기 때문에 즉시 로딩 괜찮음 (즉시로딩 N : 1은 괜찮으나 1:N은 안됨)
     // 사용자 등록 시 사용자의 권한 등록을 위해 권한 테이블 생성
     @ElementCollection(fetch = FetchType.EAGER)

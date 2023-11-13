@@ -2,10 +2,11 @@
 #######################################################################
 #DB 세팅 부분
 spring:
-  profiles:
-    default:  # 로컬 개발환경 dev / 배포시 prod
-  #######################################################################
-
+  datasource:
+    url: jdbc:mysql://studyground.cm5pos6iryz8.ap-northeast-2.rds.amazonaws.com:3306/StudyGround_db
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: student
+    password: ${MYSQL_PASSWORD}
 
 
   #    url: jdbc:mysql://studyground.cm5pos6iryz8.ap-northeast-2.rds.amazonaws.com:3306/StudyGround_db
