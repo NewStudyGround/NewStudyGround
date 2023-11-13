@@ -79,6 +79,6 @@ jobs:
               '  sudo docker rm server',
               'fi',
               'sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/studyground:${GITHUB_SHA::7}',
-              'sudo docker run -e TZ=Asia/Seoul --env-file .env -d --name server -p 8080:8080 ${{ secrets.DOCKER_HUB_USERNAME }}/server:${GITHUB_SHA::7}'
+              'sudo docker run -e TZ=Asia/Seoul --env-file .env -d --name server -p 8080:8080 ${{ secrets.DOCKER_HUB_USERNAME }}/studyground:${GITHUB_SHA::7}'
             ]" \
             --output text
