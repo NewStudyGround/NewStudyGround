@@ -40,10 +40,12 @@ jobs:
 
       # 도커 빌드 & 푸쉬
       - name: Build and push Docker image
+        working-directory: ./server    # 스텝 실행을 위한 올바른 작업 디렉토리 설정
         run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/studyground:${GITHUB_SHA::7} -f ./server/Dockerfile .
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/studyground:${GITHUB_SHA::7}
-        working-directory: ${{ env.working-directory }}
+          docker build -t ***/studyground:${GITHUB_SHA::7} -f Dockerfile . # 여기서 Dockerfile 경로를 수정합니다.
+          docker push ***/studyground:${GITHUB_SHA::7}
+        env:
+          JAVA_HOME: /opt/hostedtoolcache/Java_Zulu_jdk/11.0.21-9/x64
 
       # 서버에 배포할 때 필요한 환경변수 파일 복사해서 넣어주기
       # 명령어에 직접 민감한 정보 넣을 수 없음
