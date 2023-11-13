@@ -7,7 +7,6 @@ spring:
 
   jpa:
     hibernate:
-
       ddl-auto: create #none으로 변경
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
