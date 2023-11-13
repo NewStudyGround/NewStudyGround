@@ -4,7 +4,7 @@
 <br />
 
 ## 📅 업데이트 예정 기능
-[사용자 요구사항 정의서](file:///C:/Users/lumin/AppData/Local/Temp/9c6610ad-c096-4c61-86d2-f64d8ef3af8c_pre_016_%EC%9D%BC%EB%8B%A8%ED%95%B4%EB%B3%B4%EC%A3%A0_main.zip.f8c/%EA%B0%9C%EB%B0%9C%EC%9E%90%20%ED%85%8C%EC%8A%A4%ED%8A%B8%20%EC%B2%B4%ED%81%AC%EB%A6%AC%EC%8A%A4%ED%8A%B82(ver2).html)
+🖱️ [바로가기](https://github.com/NewStudyGround/NewStudyGround/wiki/Now-Updating)
 
 <br />
 
