@@ -54,8 +54,3 @@ dependencies {
 //tasks.named('test') {
 //	useJUnitPlatform()
 //}
-
-// Boot 2.5v 이후 설정 추가 해줘야 jar 파일 2개 생성되지 않음
-jar {
-	enabled = false
-}
