@@ -8,6 +8,7 @@ spring:
 
 
 
+
   #    url: jdbc:mysql://studyground.cm5pos6iryz8.ap-northeast-2.rds.amazonaws.com:3306/StudyGround_db
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #    username: student
@@ -25,6 +26,7 @@ spring:
 #        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 #      ddl-auto: create #서버환경에서는 none 으로 고정
 #    show-sql: true
+
   security:
     oauth2:
       client:
@@ -93,7 +95,7 @@ cloud:
       access-key: ${AWS_ACCESS_KEY}
       secret-key: ${AWS_SECRET_KEY}
     s3:
-      bucket: newstudyground
+      bucket: studyground-bucket
     region:
       static: ap-northeast-2
     stack:
