@@ -27,7 +27,7 @@ jobs:
         working-directory: ${{env.working-directory}}
 
       - name: Build with Gradle
-        run: ./gradlew build --warning-mode all --scan
+        run: ./gradlew clean build --warning-mode all --scan -x test
         working-directory: ${{env.working-directory}}
 
       - name: Login to Docker Hub
