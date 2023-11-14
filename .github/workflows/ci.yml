@@ -35,12 +35,15 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          
 
       - name: Build and push register app
         run: |
           docker build -t newstudyground -f ./server/Dockerfile .
           docker tag newstudyground ${{ secrets.DOCKER_HUB_USERNAME }}/newstudyground:${GITHUB_SHA::7}
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/newstudyground:${GITHUB_SHA::7}
+        env: 
+          GITHUB_SHA: ${{ github.sha }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
