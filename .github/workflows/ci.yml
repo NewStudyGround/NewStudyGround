@@ -38,9 +38,9 @@ jobs:
 
       - name: Build and push register app
         run: |
-          docker build -t newStudyGround -f ./server/Dockerfile .
-          docker tag newStudyGround ${{ secrets.DOCKER_HUB_USERNAME }}/newStudyGround:${GITHUB_SHA::7}
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/newStudyGround:${GITHUB_SHA::7}
+          docker build -t newstudyground -f ./server/Dockerfile .
+          docker tag newstudyground ${{ secrets.DOCKER_HUB_USERNAME }}/newstudyground:${GITHUB_SHA::7}
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/newstudyground:${GITHUB_SHA::7}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -67,7 +67,7 @@ jobs:
              '  sudo docker rm server',
              'fi',
              'sudo docker pull hae02y/newstudyground:${GITHUB_SHA::7}',
-             'sudo docker tag hae02y/newstudyground:${GITHUB_SHA::7} newStudyGround',
-             'sudo docker run -e TZ=Asia/Seoul -d --name server -p 8080:8080 newStudyGround'
+             'sudo docker tag hae02y/newstudyground:${GITHUB_SHA::7} newstudyground',
+             'sudo docker run -e TZ=Asia/Seoul -d --name server -p 8080:8080 newstudyground'
            ]" \
            --output text
