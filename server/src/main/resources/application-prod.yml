@@ -1,16 +1,6 @@
 spring:
-<<<<<<< HEAD
-  config:
-    activate:
-      on-profile: prod
-
-  jpa:
-    hibernate:
-      ddl-auto: none
 
 #CICD 배포시에 추가 설정 필요!
-=======
-
   datasource:
     url: jdbc:mysql://studyground-db.cdqu1tqs7wnb.ap-northeast-2.rds.amazonaws.com:3306/newstudyground
     username: ${RDS_USERNAME}
@@ -18,9 +8,11 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create #none으로 변경
+      ddl-auto: none #none으로 변경
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
->>>>>>> 9701ed713577f3c430c80f7b39625e203d73afb7
+    properties:
+      hibernate:
+        format_sql: true
