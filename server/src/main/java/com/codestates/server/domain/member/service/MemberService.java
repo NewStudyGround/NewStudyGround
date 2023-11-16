@@ -1,6 +1,9 @@
 package com.codestates.server.domain.member.service;
 
 import com.codestates.server.domain.board.repository.BoardRepository;
+import com.codestates.server.domain.pointhistory.entity.PointHistory;
+import com.codestates.server.domain.pointhistory.entity.PointHistoryType;
+import com.codestates.server.domain.pointhistory.service.PointHistoryService;
 import com.codestates.server.global.mail.event.MemberRegistrationEvent;
 import com.codestates.server.global.security.utils.AuthUserUtils;
 import com.codestates.server.domain.member.entity.Member;
@@ -19,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -34,6 +36,9 @@ public class MemberService {
     private final CustomAuthorityUtils customAuthorityUtils;    // 사용자 권한 설정
     private final S3UploadService s3UploadService;
     private final ApplicationEventPublisher eventPublisher;
+    private final PointHistoryService pointHistoryService;
+
+
 
     private static final String DEFAULT_IMAGE = "http://bit.ly/46a2mSp";    // 회원 기본 이미지
     private static final String MEMBER_IMAGE_PROCESS_TYPE = "profile-image";
@@ -65,11 +70,16 @@ public class MemberService {
             member.setProfileImage(member.getProfileImage());
         }
 
+        member.setPoint(1000L);
+
         // 예외 발생 안 시키면 저장
         Member savedMember = memberRepository.save(member);
 
         MemberRegistrationEvent event = new MemberRegistrationEvent(member);
         eventPublisher.publishEvent(event);
+
+        PointHistory pointHistory = new PointHistory(1000L,savedMember, PointHistoryType.JOIN);
+        pointHistoryService.savePointHistory(pointHistory);
 
         return savedMember;
     }
