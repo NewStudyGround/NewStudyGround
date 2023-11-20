@@ -13,6 +13,7 @@ import Edit from './pages/Community/Edit';
 import Kakao from './pages/Login/Kakao';
 import ComDetail from './pages/Community/ComDetail';
 import { ToastContainer } from 'react-toastify';
+import Userpage from './pages/Userpage/Userpage';
 import 'react-toastify/dist/ReactToastify.css';
 // import InfoMock from './pages/LicenseInfo/Infomock';
 import { toast } from 'react-toastify';
@@ -44,6 +45,7 @@ function App() {
           <Route path="/mypage" element={<MyInfo />} />
           <Route path="/search" element={<SearchFiltered />} />
           <Route path="/login/oauth/code/kakao" element={<Kakao />} />
+          <Route path="/user" element={<Userpage />} />
           <Route path="/community/boards/:id" element={<ComDetail />} />
         </Routes>
       </div>
