@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import com.codestates.server.domain.board.entity.Board;
 import com.codestates.server.domain.board.repository.BoardRepository;
 import com.codestates.server.domain.member.entity.Member;
-import com.codestates.server.domain.member.repository.MemberRepository;
 import com.codestates.server.domain.member.service.MemberService;
 
 @Service
@@ -96,7 +95,7 @@ public class BoardService {
 		return boardRepository.findAll();
 	}
 
-	public void deleteBoard(Long boardId, Long memberId) {
+	public Board deleteBoard(Long boardId, Long memberId) {
 		// 회원아이디랑 로그인된 객체 정보랑 동일한지 확인
 		memberService.verifyAuthorizedUser(memberId);
 
@@ -105,6 +104,19 @@ public class BoardService {
 
 		boardRepository.delete(findBoard);
 
+        return findBoard;
+    }
+
+	public void deleteAdminBoard(Long memberId, Long boardId) {
+		Member member = memberService.getMember(memberId);
+		// 회원한테 보드 아이디 있는지 혹인하고 있으면 삭제
+		Board boardToDelete = member.getBoards().stream()
+				.filter(board -> board.getBoardId().equals(boardId))
+				.findFirst().orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
+
+		// 데이터 일관성 유지
+		member.getBoards().remove(boardToDelete);
+		boardRepository.delete(boardToDelete);
 	}
 
 	private static void viewCountUp(Board board) {

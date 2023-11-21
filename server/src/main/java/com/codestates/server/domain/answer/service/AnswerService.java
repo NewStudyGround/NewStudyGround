@@ -66,7 +66,18 @@ public class AnswerService {
 				answerRepository.deleteById(answerId);
 			} else throw new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND);
 		}
-}
+	}
+
+	public void deleteAdminAnswer(Long memberId, Long answerId) {
+		Member member = memberService.getMember(memberId);
+		// 회원한테 answerId 있는지 확인하고 있으면 삭제
+		Answer answerToDelete = member.getAnswers().stream()
+				.filter(answer -> answer.getAnswerId().equals(answerId))
+				.findFirst().orElseThrow(() -> new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND));
+
+		member.getAnswers().remove(answerToDelete);
+		answerRepository.delete(answerToDelete);
+	}
 
 	public Answer findAnswerById(long answerId) {
 		return answerRepository.findById(answerId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND));

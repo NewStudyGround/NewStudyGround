@@ -22,8 +22,13 @@ public class MemberAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, 
                        HttpServletResponse response,
                        AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        // 권한 확인 과정에서 deniedException 발생 시 errorResponse 생성 후 전송
-        ErrorResponder.sendErrorResponse(response, HttpStatus.FORBIDDEN);
-        log.warn("⚠️ Forbidden error happened: {}", accessDeniedException.getMessage());
+        // 만약에 접근 권한 없는 사용자가 들어왔을 때는 메인 페이지로 리다이렉트
+        if(request.getRequestURI().startsWith("/admin/members")){
+            response.sendRedirect("/");
+        } else {
+            // 권한 확인 과정에서 deniedException 발생 시 errorResponse 생성 후 전송
+            ErrorResponder.sendErrorResponse(response, HttpStatus.FORBIDDEN);
+            log.warn("⚠️ Forbidden error happened: {}", accessDeniedException.getMessage());
+        }
     }
 }

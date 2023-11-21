@@ -2,6 +2,7 @@ package com.codestates.server.domain.comment.service;
 
 import com.codestates.server.domain.comment.entity.Comment;
 import com.codestates.server.domain.comment.repository.CommentRepository;
+import com.codestates.server.domain.member.entity.Member;
 import com.codestates.server.domain.member.service.MemberService;
 import com.codestates.server.global.exception.BusinessLogicException;
 import com.codestates.server.global.exception.ExceptionCode;
@@ -71,5 +72,16 @@ public class CommentService {
      */
     public Comment findCommentById(long commentId) {
         return commentRepository.findById(commentId).orElseThrow(()->new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+    }
+
+    public void deleteAdminComment(Long memberId, Long commentId) {
+
+        Member member = memberService.getMember(memberId);
+        Comment commentToDelete = member.getComments().stream()
+                .filter(comment -> comment.getId().equals(commentId))
+                .findFirst().orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+
+        member.getComments().remove(commentToDelete);
+        commentRepository.delete(commentToDelete);
     }
 }
