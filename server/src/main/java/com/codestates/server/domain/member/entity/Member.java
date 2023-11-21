@@ -4,6 +4,7 @@ import com.codestates.server.domain.answer.entity.Answer;
 import com.codestates.server.domain.board.entity.Board;
 import com.codestates.server.domain.bookmark.entity.Bookmark;
 import com.codestates.server.domain.comment.entity.Comment;
+import com.codestates.server.domain.pointhistory.entity.PointHistory;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -33,6 +34,12 @@ public class Member {
     private String profileImage;
 
     private Long point; //계산된 포인트값
+
+    // 포인트 히스토리에서 멤버를 참조 하고 있어서 포인트 히스토리도 같이 지워져야 함
+    // cascade 옵션 추가해서 Member 삭제 시 같이 같이 삭제될 수 있게 추가
+    @JsonIgnore
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<PointHistory> pointHistories;
 
     // 멤버 당 하나의 권한을 가지기 때문에 즉시 로딩 괜찮음 (즉시로딩 N : 1은 괜찮으나 1:N은 안됨)
     // 사용자 등록 시 사용자의 권한 등록을 위해 권한 테이블 생성
