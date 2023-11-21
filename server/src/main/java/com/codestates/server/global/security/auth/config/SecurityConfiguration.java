@@ -63,7 +63,7 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.POST, "/members/signup").permitAll()
                         .antMatchers(HttpMethod.PATCH, "/members/mypage/edit/**").hasRole("USER")
                         .antMatchers(HttpMethod.PATCH, "/members/mypage/**").hasRole("USER")
-                        .antMatchers(HttpMethod.GET, "/members").hasRole("ADMIN")
+                        .antMatchers(HttpMethod.GET, "/members").permitAll()
                         .antMatchers(HttpMethod.GET, "/members/**").hasAnyRole("ADMIN", "USER")
                         .antMatchers(HttpMethod.DELETE, "/members/delete/**").hasAnyRole("USER")
                         .antMatchers(HttpMethod.PATCH, "/members/mypage/image/upload/**").hasRole("USER")
@@ -85,6 +85,9 @@ public class SecurityConfiguration {
                 /** ---------------------------------- licenses 접근 권한 설정 ---------------------------------- **/
                         .antMatchers(HttpMethod.GET, "/licenses/**").permitAll()
                         .antMatchers(HttpMethod.GET, "/licenses").permitAll()
+                /** ---------------------------------- admin 접근 권한 설정 무조건 ADMIN---------------------------------- **/
+                        .antMatchers(HttpMethod.GET, "/admin/members/**").hasRole("ADMIN")
+                        .antMatchers(HttpMethod.DELETE, "/admin/members/**").hasRole("ADMIN")
                 );
 
 //                Spring security OAuth2 적용 버전
