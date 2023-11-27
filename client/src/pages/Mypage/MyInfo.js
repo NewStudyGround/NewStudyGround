@@ -1,58 +1,56 @@
 import React, { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { Calendar } from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
-import Modal from '../../components/Modal/Modal';
-import DelModal from '../../components/DelModal/DelModal';
+import { useForm } from 'react-hook-form';
 import {
   GetUserInfo,
   DeleteUser,
   EditUser,
   UploadProfileImage,
 } from '../../utils/API';
-// import UserInfoData from '../../utils/UserdataMockup';
-import { toast } from 'react-toastify';
-// import { Link } from 'react-router-dom';
-
 import {
-  CalendarContainer,
-  LikedInfo,
   MypageStyle,
   Profile,
-  ProfileLeft,
-  ProfileRight,
-  SchedulePlusLog,
-  Log,
-  Written,
+  TabContainer,
+  CalendarContainer,
   BookMarkContainer,
   WriteContents,
+  Producttab,
+  PurchaseHistoryContainer,
+  PointHistoryContainer,
+  BookMarklist,
+  Writelist,
+  ProfileRight,
+  ProfileLeft,
 } from './MypageStyle';
-
+import { toast } from 'react-toastify';
+import { Calendar } from 'react-calendar';
+import Modal from '../../components/Modal/Modal';
+import 'react-calendar/dist/Calendar.css';
+import ComCard from '../../components/ComCard/Comcard';
+import Comlist from '../../components/Comlist/Comlist';
+import DelModal from '../../components/DelModal/DelModal';
+import { useNavigate } from 'react-router-dom';
+import PasswordModal from '../../components/Password/PasswordModal';
+localStorage.setItem('mypagetab', 'calendar');
 const MyInfo = () => {
   const [userInfo, setUserInfo] = useState([]);
+  const [selectedTab, setSelectedTab] = useState('calendar');
+  const [date, setDate] = useState(new Date());
   const [isIndex, setIndex] = useState();
   const [isModalOpen, setModalOpen] = useState(false);
+  // const [viewType, setViewType] = useState('card');
+  const [selectedCategory, setSelectedCategory] = useState('후기');
+  const [selectedCategory1, setSelectedCategory1] = useState('후기');
+  const [ViewType, setViewType] = useState('list');
+  const [ViewType1, setViewType1] = useState('list');
   const [isDelModalOpen, setDelModalOpen] = useState(false);
   const [warningMessage, setWarningMessage] = useState('');
   const [isEditMode, setIsEditMode] = useState(false);
-  // const [eventDates, setEventDates] = useState([]);
-  const [date, setDate] = useState(new Date());
   const navigator = useNavigate();
+  const [password, setPassword] = useState('');
+  const [isPasswordModalOpen, setPasswordModalOpen] = useState(false);
 
-  const inputErrorClass = 'input-error';
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting, errors },
-    trigger,
-  } = useForm();
-
-  console.log(userInfo.name);
-
-  // 유저 정보 가져오기
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
@@ -64,7 +62,6 @@ const MyInfo = () => {
     };
     fetchUserInfo();
   }, []);
-  console.log(userInfo);
 
   const route = (index) => {
     if (isModalOpen === false) {
@@ -73,7 +70,98 @@ const MyInfo = () => {
     setIndex(index);
   };
 
-  // 유저 정보 수정
+  const handleTabChange = (tab) => {
+    setSelectedTab(tab);
+    // setSelectedTab이 완료된 후에 실행되도록 useEffect를 사용
+  };
+
+  useEffect(() => {
+    localStorage.setItem('mypagetab', selectedTab);
+  }, [selectedTab]);
+
+  const handleViewChange = (newViewType) => {
+    setViewType(newViewType);
+  };
+
+  const handleViewChange1 = (newViewType) => {
+    setViewType1(newViewType);
+  };
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+  };
+
+  const handleCategoryChange1 = (category) => {
+    setSelectedCategory1(category);
+  };
+  const openDetail = (boardId) => {
+    navigator(`/community/boards/${boardId}`);
+  };
+  const Writecon = () => {
+    return (
+      <div>
+        {ViewType === 'card' ? (
+          <ComCard
+            username="사용자 이름"
+            email="이메일 주소"
+            tag="태그"
+            title="글 제목"
+            onClick={() => {
+              // 클릭 이벤트 처리
+            }}
+            img="이미지 URL"
+          />
+        ) : (
+          <Comlist
+            username="사용자 이름"
+            email="이메일 주소"
+            tag="태그"
+            title="글 제목"
+            onClick={() => {
+              // 클릭 이벤트 처리
+            }}
+          />
+        )}
+      </div>
+    );
+  };
+
+  const BookMarkcon = () => {
+    return (
+      <div>
+        {ViewType1 === 'card' ? (
+          <ComCard
+            username="사용자 이름"
+            email="이메일 주소"
+            tag="태그"
+            title="글 제목"
+            onClick={() => {
+              // 클릭 이벤트 처리
+            }}
+            img="이미지 URL"
+          />
+        ) : (
+          <Comlist
+            username="사용자 이름"
+            email="이메일 주소"
+            tag="태그"
+            title="글 제목"
+            onClick={() => {
+              // 클릭 이벤트 처리
+            }}
+          />
+        )}
+      </div>
+    );
+  };
+
+  const inputErrorClass = 'input-error';
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting, errors },
+    trigger,
+  } = useForm();
+
   const [newUsername, setNewUsername] = useState(userInfo.name);
   const [newPhone, setNewPhone] = useState(userInfo.phone);
 
@@ -169,153 +257,98 @@ const MyInfo = () => {
     fileInput.click();
   };
 
-  const openDetail = (boardId) => {
-    navigator(`/community/boards/${boardId}`);
+  const handleEditPasswordClick = () => {
+    // 패스워드 확인 모달 열기
+    setPasswordModalOpen(true);
   };
 
-  // const extractEventDates = () => {
-  //   const extractedDates = [];
+  const closePasswordModal = () => {
+    // 패스워드 확인 모달 닫기
+    setPasswordModalOpen(false);
+  };
 
-  //   userInfo.bookmarks.forEach((bookmark) => {
-  //     extractedDates.push(new Date(bookmark.licenseInfo.docRegStartDt));
-  //     extractedDates.push(new Date(bookmark.licenseInfo.docRegEndDt));
-  //     extractedDates.push(new Date(bookmark.licenseInfo.docExamStartDt));
-  //     extractedDates.push(new Date(bookmark.licenseInfo.docExamEndDt));
-  //   });
+  // const handlePasswordVerification = async () => {
+  //   try {
+  //     // 서버에 패스워드 확인 요청
+  //     // 'password' 상태 변수를 패스워드 입력에 사용
+  //     // 패스워드가 올바르면 수정 모드로 진행
+  //     // 그렇지 않으면 에러 메시지 표시 또는 이에 맞게 처리
 
-  //   return extractedDates;
+  //     // 예시: 아래의 줄을 실제 패스워드 확인 로직으로 교체하세요
+  //     const isPasswordCorrect = await verifyPassword(password);
+
+  //     if (isPasswordCorrect) {
+  //       // 패스워드가 올바를 경우, 수정 모드로 진행
+  //       setIsEditMode(true);
+  //       closePasswordModal();
+  //     } else {
+  //       // 패스워드가 올바르지 않을 경우 에러 메시지 표시
+  //       toast.error('비밀번호가 잘못되었습니다. 다시 시도해주세요.');
+  //     }
+  //   } catch (error) {
+  //     console.error('패스워드 확인 오류:', error);
+  //     // 에러 처리: 에러 메시지 표시, 에러에 맞게 처리 등
+  //   }
   // };
-
-  // useEffect(() => {
-  //   // 이벤트 날짜 추출 및 상태 업데이트
-  //   const extractedDates = extractEventDates();
-  //   setEventDates(extractedDates);
-  // }, []);
-
+  const handlePasswordVerification = async () => {
+    try {
+      // 패스워드 확인 모달에서 입력받은 패스워드 값이 123일 때만 수정 모드로 진행
+      if (password === '123') {
+        setIsEditMode(true);
+        closePasswordModal();
+      }
+    } catch (error) {
+      console.error('패스워드 확인 오류:', error);
+      // 에러 처리: 에러 메시지 표시, 에러에 맞게 처리 등
+      toast.error('알 수 없는 오류가 발생했습니다.');
+    }
+  };
   return (
     <MypageStyle>
       <Header />
       <Profile>
-        <ProfileLeft>
+        <div className="display">
           <img src={userInfo.profileImage} alt="useravatar" />
-          <button className="edit" onClick={handleEditPhotoClick}>
-            edit photo
-          </button>
-          <input
-            id="fileInput"
-            type="file"
-            accept="image/*"
-            style={{ display: 'none' }}
-            onChange={handleFileChange}
-          />
-          <button className="delBtn" onClick={handleDeleteUser}>
-            회원탈퇴하기
-          </button>
-          <DelModal
-            isOpen={isDelModalOpen}
-            onCancel={closeDelModal}
-            onConfirm={confirmDeleteUser}
-            warningMessage={warningMessage}
-          />
-        </ProfileLeft>
-        <ProfileRight onSubmit={handleSubmit(confirmEditUser)}>
-          {isEditMode ? (
-            <>
-              <div className="input-username">
-                <p>새 닉네임</p>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="새 닉네임을 입력해 주세요."
-                  {...register('name', {
-                    required: '닉네임은 필수 입력입니다.',
-                  })}
-                  onBlur={() => trigger('name')}
-                  className={errors.name ? inputErrorClass : ''}
-                  onChange={(e) => setNewUsername(e.target.value)}
-                />
-              </div>
-
-              <div className="input-phonenumber">
-                <p>새 전화번호</p>
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="새 전화번호를 입력해 주세요."
-                  {...register('phone', {
-                    required: '전화번호는 필수 입력입니다.',
-                  })}
-                  onBlur={() => trigger('phone')}
-                  className={errors.phone ? inputErrorClass : ''}
-                  onChange={(e) => setNewPhone(e.target.value)}
-                />
-              </div>
-
-              <button
-                className="editinfo"
-                type="submit"
-                disabled={isSubmitting}
-                onClick={confirmEditUser}
-              >
-                수정완료
-              </button>
-            </>
-          ) : (
-            <div className="display">
-              <div className="text">
-                닉네임<p>{userInfo.name}</p>
-                전화번호<p>{userInfo.phone}</p>
-              </div>
-              <button className="editinfo" onClick={() => setIsEditMode(true)}>
-                내정보 수정하기
-              </button>
+          <div className="text">
+            <div>
+              {userInfo.name}/{userInfo.email}
             </div>
-          )}
-        </ProfileRight>
+            {/* 자기소개 */}
+          </div>
+        </div>
       </Profile>
-      <SchedulePlusLog>
-        <CalendarContainer className="calendar-container">
-          <Calendar
-            onChange={handleDateChange}
-            value={date}
-            showNeighboringMonth={false} //  이전, 이후 달의 날짜는 보이지 않도록 설정
-            formatDay={(locale, date) =>
-              date.toLocaleString('en', { day: 'numeric' })
-            }
-            nextLabel={'▶'}
-            prevLabel={'◀'}
-            next2Label={null}
-            prev2Label={null}
-            // tileContent={({ date, view }) => {
-            //   if (view === 'month' && eventDates.includes(date)) {
-            //     // 이벤트가 있는 경우 해당 이벤트의 name 표시
-            //     const eventLicenseNames = userInfo.bookmarks
-            //       .filter((bookmark) =>
-            //         [
-            //           bookmark.licenseInfo.docRegStartDt,
-            //           bookmark.licenseInfo.docRegEndDt,
-            //           bookmark.licenseInfo.docExamStartDt,
-            //           bookmark.licenseInfo.docExamEndDt,
-            //         ].includes(date.toISOString()),
-            //       )
-            //       .map((bookmark) => bookmark.licenseInfo.name);
-
-            //     return (
-            //       <div className="licensedate">
-            //         {eventLicenseNames.map((name, index) => (
-            //           <div key={index}>{name}</div>
-            //         ))}
-            //       </div>
-            //     );
-            //   } else {
-            //     return null;
-            //   }
-            // }}
-          />
-        </CalendarContainer>
-        <Log>
-          <LikedInfo>
-            나의 관심 자격증
+      <TabContainer>
+        <button onClick={() => handleTabChange('calendar')}>달력</button>
+        <button onClick={() => handleTabChange('boards')}>글 목록</button>
+        <button onClick={() => handleTabChange('products')}>상품 목록</button>
+        <button
+          onClick={() => {
+            handleTabChange('edit');
+            handleEditPasswordClick();
+          }}
+        >
+          정보 수정
+        </button>
+      </TabContainer>
+      {selectedTab === 'calendar' && (
+        <CalendarContainer style={{ display: 'flex', flexDirection: 'column' }}>
+          {/* 캘린더 부분 */}
+          <div className="calendar-wrapper">
+            <Calendar
+              onChange={handleDateChange}
+              value={date}
+              showNeighboringMonth={false}
+              formatDay={(locale, date) =>
+                date.toLocaleString('en', { day: 'numeric' })
+              }
+              nextLabel={'▶'}
+              prevLabel={'◀'}
+              next2Label={null}
+              prev2Label={null}
+            />
+          </div>
+          <div className="bookmarks-wrapper">
+            <div>나의 관심 자격증</div>
             {userInfo?.bookmarks?.length > 0 && (
               <BookMarkContainer>
                 {isModalOpen === true && (
@@ -338,28 +371,207 @@ const MyInfo = () => {
                 ))}
               </BookMarkContainer>
             )}
-          </LikedInfo>
-          <Written>
-            내가 작성한 글
+          </div>
+        </CalendarContainer>
+      )}
+
+      {selectedTab === 'boards' && (
+        <WriteContents>
+          <Writelist>
+            <div>작성한글</div>
+            <div>
+              <button onClick={() => handleCategoryChange('후기')}>후기</button>
+              <button onClick={() => handleCategoryChange('질문')}>질문</button>
+              <button onClick={() => handleCategoryChange('자유')}>자유</button>
+              {/* 선택한 카테고리에 따라 글 목록을 표시하는 컴포넌트나 요소 추가 */}
+              {/* 예를 들어, <CategoryPostsList category={selectedCategory} viewType={viewType} /> */}
+            </div>
+            <div>
+              <button onClick={() => handleViewChange('card')}>카드형</button>
+              <button onClick={() => handleViewChange('list')}>리스트형</button>
+            </div>
             {userInfo?.boards?.length > 0 ? (
-              <WriteContents>
-                {userInfo?.boards?.map((boards, index) => (
-                  <button
-                    className="write"
-                    key={index}
-                    onClick={() => openDetail(boards.boardId)}
-                  >
-                    {boards.title}
-                  </button>
-                ))}
-                {/* </Link> */}
-              </WriteContents>
+              <Writecon>
+                {userInfo?.boards
+                  .filter((board) => board.category === selectedCategory)
+                  .map((boards, index) => (
+                    <button
+                      className="write"
+                      key={index}
+                      onClick={() => openDetail(boards.boardId)}
+                    >
+                      {boards.title}
+                    </button>
+                  ))}
+              </Writecon>
             ) : (
               <p>아직 작성한 글이 없어요😅</p>
             )}
-          </Written>
-        </Log>
-      </SchedulePlusLog>
+          </Writelist>
+          <BookMarklist>
+            <div>북마크한 글</div>
+            <div>
+              <button onClick={() => handleCategoryChange1('후기')}>
+                후기
+              </button>
+              <button onClick={() => handleCategoryChange1('질문')}>
+                질문
+              </button>
+              <button onClick={() => handleCategoryChange1('자유')}>
+                자유
+              </button>
+              {/* 선택한 카테고리에 따라 글 목록을 표시하는 컴포넌트나 요소 추가 */}
+              {/* 예를 들어, <CategoryPostsList category={selectedCategory} viewType={viewType} /> */}
+            </div>
+            <div>
+              <button onClick={() => handleViewChange1('card')}>카드형</button>
+              <button onClick={() => handleViewChange1('list')}>
+                리스트형
+              </button>
+            </div>
+            {userInfo?.boards?.length > 0 ? (
+              <BookMarkcon>
+                {userInfo?.boards
+                  .filter((board) => board.category === selectedCategory1)
+                  .map((boards, index) => (
+                    <button
+                      className="write"
+                      key={index}
+                      onClick={() => openDetail(boards.boardId)}
+                    >
+                      {boards.title}
+                    </button>
+                  ))}
+              </BookMarkcon>
+            ) : (
+              <p>아직 북마크한 글이 없어요😅</p>
+            )}
+          </BookMarklist>
+        </WriteContents>
+      )}
+      {selectedTab === 'products' && (
+        <Producttab>
+          <div>
+            {' '}
+            <PurchaseHistoryContainer>
+              <div>구매내역</div>
+            </PurchaseHistoryContainer>
+          </div>
+          <div>
+            {' '}
+            <PointHistoryContainer>
+              <div>포인트내역</div>
+            </PointHistoryContainer>
+          </div>
+        </Producttab>
+      )}
+      {selectedTab === 'edit' && (
+        <Profile>
+          <ProfileLeft>
+            <img src={userInfo.profileImage} alt="useravatar" />
+            <button className="edit" onClick={handleEditPhotoClick}>
+              edit photo
+            </button>
+            <input
+              id="fileInput"
+              type="file"
+              accept="image/*"
+              disabled={isPasswordModalOpen}
+              style={{ display: 'none' }}
+              onChange={handleFileChange}
+            />
+            <button
+              className="delBtn"
+              disabled={isPasswordModalOpen}
+              onClick={handleDeleteUser}
+            >
+              회원탈퇴하기
+            </button>
+            <DelModal
+              isOpen={isDelModalOpen}
+              onCancel={closeDelModal}
+              onConfirm={confirmDeleteUser}
+              warningMessage={warningMessage}
+            />
+          </ProfileLeft>
+          <ProfileRight onSubmit={handleSubmit(confirmEditUser)}>
+            {isEditMode ? (
+              <>
+                <div className="input-username">
+                  <p>새 닉네임</p>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="새 닉네임을 입력해 주세요."
+                    {...register('name', {
+                      required: '닉네임은 필수 입력입니다.',
+                    })}
+                    onBlur={() => trigger('name')}
+                    className={errors.name ? inputErrorClass : ''}
+                    onChange={(e) => setNewUsername(e.target.value)}
+                  />
+                </div>
+
+                <div className="input-phonenumber">
+                  <p>새 전화번호</p>
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="새 전화번호를 입력해 주세요."
+                    {...register('phone', {
+                      required: '전화번호는 필수 입력입니다.',
+                    })}
+                    onBlur={() => trigger('phone')}
+                    className={errors.phone ? inputErrorClass : ''}
+                    onChange={(e) => setNewPhone(e.target.value)}
+                  />
+                </div>
+
+                <button
+                  className="editinfo"
+                  type="submit"
+                  disabled={isSubmitting}
+                  onClick={confirmEditUser}
+                >
+                  수정완료
+                </button>
+              </>
+            ) : (
+              <div className="display">
+                <div className="text">
+                  닉네임<p>{userInfo.name}</p>
+                  전화번호<p>{userInfo.phone}</p>
+                </div>
+                <button
+                  className="editinfo"
+                  disabled={isPasswordModalOpen}
+                  onClick={() => setIsEditMode(true)}
+                >
+                  내정보 수정하기
+                </button>
+              </div>
+            )}
+            <PasswordModal
+              isOpen={isPasswordModalOpen}
+              onClose={closePasswordModal}
+              onConfirm={handlePasswordVerification}
+            >
+              <div>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <button onClick={handlePasswordVerification}>
+                비밀번호 확인
+              </button>
+              <button onClick={closePasswordModal}>취소</button>
+            </PasswordModal>
+          </ProfileRight>
+        </Profile>
+      )}
+
       <Footer />
     </MypageStyle>
   );
