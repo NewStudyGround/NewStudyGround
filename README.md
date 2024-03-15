@@ -1,11 +1,6 @@
 # NewStudyGround
-스터디그라운드 ver.2 업데이트 진행 중
 
 <br />
-
-## 📅 업데이트 예정 기능
-🖱️ [바로가기](https://github.com/NewStudyGround/NewStudyGround/wiki/Now-Updating)
-
 <br />
 
 <div align="center">
