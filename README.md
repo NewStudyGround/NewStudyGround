@@ -1,5 +1,4 @@
 # NewStudyGround
-스터디그라운드 ver.2 업데이트 진행 중
 
 <br />
 
